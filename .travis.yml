@@ -1,0 +1,20 @@
+language: go
+go:
+  - 1.7
+
+script:
+  - make test
+  - make build
+
+before_deploy: make release-build
+
+deploy:
+  provider: releases
+  api_key:
+    secure: PD+DwDNkSpXh8koZi/ttUVPLtZsDgM/QA6kQ8372Vgsidcflv3mK1OTuFAm14Ot61xO6/VZND47N8jGJZfpo+6cunRmnLcpCcRxTiT19/Jyjy6tBQwq8OzLOGTknuuHqPjF0LqX41cUIcoprii8wdJLApJgEoN1d4xB2v9P6YNDClucg9x0Qzyl2mxUObwfuYdGtQyOCa1AEiiNCoHb7ivZdxd3U60L9UTplzfPmNQ1GGgmZHbLpSPQ31za3651TrFeZk6v3gu6Dc+SQUKv61MmmYjqC3N1FHBm8s2B9YNRd0L7VdFBn8btXBCKo225rJ99/vN1x49Ni3Q3gF5gLrxOgbEfM6GzmXpoiVBUnfLoks/6Tj92ROJf9vYwO7kGsXZeQcyO3QCNCE5MKWfGmCGShY4aVqy/2Z0Wifl4M9hxDgT+GsucU/2oODrTK4ZOIr277Q38ZvBa8wpi/hziknRQauB/w8lQxiBJBv+C9hFLhddeBi3iG9PNqbxretsgxkmesgPWjRS2/9tm1Eem3MPlhH4NY6dWR/dVInCJEyXiHXa/CzfCnKeie3kw6riozh1bai+/M7s8+pVGkRdivtmplo4El0/dOMtx5Rs8fNby62PKZaJQVxxdiEB4w+Up7GOx77TbIuocD2Dtl3v4LNQvtVJU+rKOEAR5oCl5PZsY=
+  file:
+    - build/maillog_exporter_freebsd_amd64
+    - build/maillog_exporter_linux_amd64
+  on:
+    tags: true
+    repo: thomersch/maillog_exporter
