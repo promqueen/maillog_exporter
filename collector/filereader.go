@@ -28,7 +28,7 @@ const (
 
 func ConsumeLogs(logs []string) {
 	for _, logFile := range logs {
-		go func() {
+		go func(logFile string) {
 			t, err := tail.TailFile(logFile, tail.Config{
 				Location: &tail.SeekInfo{0, 0},
 				ReOpen:   true,
@@ -66,7 +66,7 @@ func ConsumeLogs(logs []string) {
 					log.Printf("unhandled event: %s", parseLine(line.Text))
 				}
 			}
-		}()
+		}(logFile)
 	}
 }
 
@@ -75,8 +75,13 @@ func parseLine(line string) event {
 	if len(parts) < 6 {
 		return eventEmpty
 	}
+
 	logger := parts[5]
 	msg := strings.Join(parts[6:], " ")
+	if strings.HasPrefix(parts[3], "imap") {
+		logger = parts[3]
+		msg = strings.Join(parts[4:], " ")
+	}
 
 	switch {
 	case strings.Contains(logger, "postfix/submission"):
@@ -115,6 +120,16 @@ func parseLine(line string) event {
 		}
 		if strings.Contains(msg, "status=bounced") {
 			return bounced
+		}
+
+	case strings.HasPrefix(logger, "imap-login"):
+		if strings.HasPrefix(msg, "Info: Login:") {
+			return connectIMAP
+		}
+
+	case strings.HasPrefix(logger, "imap"):
+		if strings.HasPrefix(msg, "Info: Logged out") {
+			return disconnectIMAP
 		}
 
 	case strings.HasPrefix(logger, "postgrey"):
