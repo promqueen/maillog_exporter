@@ -3,7 +3,7 @@ GOX       = gox
 BUILD_DIR = $(CURDIR)/build
 GOX_ARGS  = -output="$(BUILD_DIR)/{{.Dir}}_{{.OS}}_{{.Arch}}" -osarch="linux/amd64 freebsd/amd64"
 
-
+.PHONY: build
 build:
 	GOBIN=$(BUILD_DIR) $(GO) install -v
 

@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/thomersch/maillog_exporter/collector"
+	"github.com/promqueen/maillog_exporter/collector"
 
 	"github.com/prometheus/client_golang/prometheus"
 )
