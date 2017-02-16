@@ -12,4 +12,4 @@ test:
 
 release-build:
 	$(GO) get -u github.com/mitchellh/gox
-	$(GOX) $(GOX_ARGS) github.com/thomersch/maillog_exporter
+	$(GOX) $(GOX_ARGS) .
