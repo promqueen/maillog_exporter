@@ -17,4 +17,4 @@ deploy:
     - build/maillog_exporter_linux_amd64
   on:
     tags: true
-    repo: thomersch/maillog_exporter
+    repo: promqueen/maillog_exporter

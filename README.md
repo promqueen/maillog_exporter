@@ -1,5 +1,7 @@
 # Maillog Exporter for Prometheus
 
+[![Build Status](https://travis-ci.org/promqueen/maillog_exporter.svg?branch=master)](https://travis-ci.org/promqueen/maillog_exporter)
+
 Maillog Exporter consumes one or more log files from Postfix, Dovecot and Postgrey and exposes the metrics for Prometheus.
 
 ## Running
