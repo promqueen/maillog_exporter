@@ -73,17 +73,22 @@ func ConsumeLogs(logs []string) {
 }
 
 func parseLine(line string) event {
-	parts := strings.Split(line, " ")
-	if len(parts) < 6 {
+	if len(line) < 16 {
 		return eventEmpty
 	}
-
-	logger := parts[5]
-	msg := strings.Join(parts[6:], " ")
-	if strings.HasPrefix(parts[3], "imap") || strings.HasPrefix(parts[3], "master") {
-		logger = parts[3]
-		msg = strings.Join(parts[4:], " ")
+	// remove the datetime
+	line = line[16:]
+	// remove prefix if syslog
+	if line[:4] == "mail" {
+		line = line[5:]
 	}
+
+	parts := strings.SplitN(line, " ", 2)
+	if len(parts) < 2 {
+		return eventEmpty
+	}
+	logger := parts[0]
+	msg := parts[1]
 
 	switch {
 	case strings.Contains(logger, "postfix/submission"):

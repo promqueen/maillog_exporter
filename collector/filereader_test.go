@@ -33,7 +33,7 @@ func TestParseLine(t *testing.T) {
 	})
 
 	t.Run("user unknown", func(t *testing.T) {
-		evt := parseLine("Feb  1 15:34:43 mail postfix/smtpd[44718]: NOQUEUE: reject: RCPT from nm27.bullet.mail.ne1.yahoo.com[98.138.90.90]: 550 5.1.1 <test@example.com>: Recipient address rejected: User unknown in virtual mailbox table; from=<frank.richard112@yahoo.com> to=<test@example.com> proto=ESMTP helo=<nm27.bullet.mail.ne1.yahoo.com>")
+		evt := parseLine("Feb 16 15:34:43 mail postfix/smtpd[44718]: NOQUEUE: reject: RCPT from nm27.bullet.mail.ne1.yahoo.com[98.138.90.90]: 550 5.1.1 <test@example.com>: Recipient address rejected: User unknown in virtual mailbox table; from=<frank.richard112@yahoo.com> to=<test@example.com> proto=ESMTP helo=<nm27.bullet.mail.ne1.yahoo.com>")
 		assert.Equal(t, unknownUser, evt)
 	})
 
