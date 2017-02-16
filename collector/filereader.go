@@ -17,6 +17,7 @@ const (
 	disconnectSMTP
 	connectIMAP
 	disconnectIMAP
+	resetIMAP
 	incomingMail
 	outgoingMail
 	unknownUser
@@ -30,9 +31,8 @@ func ConsumeLogs(logs []string) {
 	for _, logFile := range logs {
 		go func(logFile string) {
 			t, err := tail.TailFile(logFile, tail.Config{
-				Location: &tail.SeekInfo{0, 0},
-				ReOpen:   true,
-				Follow:   true,
+				ReOpen: true,
+				Follow: true,
 			})
 			if err != nil {
 				log.Fatalf("could not consume log %v, because: %v", logFile, err)
@@ -50,6 +50,8 @@ func ConsumeLogs(logs []string) {
 					openConnections.WithLabelValues("imap").Inc()
 				case disconnectIMAP:
 					openConnections.WithLabelValues("imap").Dec()
+				case resetIMAP:
+					openConnections.WithLabelValues("imap").Set(0)
 				case incomingMail:
 					mailsTransferred.WithLabelValues("in").Add(1)
 				case outgoingMail:
@@ -78,7 +80,7 @@ func parseLine(line string) event {
 
 	logger := parts[5]
 	msg := strings.Join(parts[6:], " ")
-	if strings.HasPrefix(parts[3], "imap") {
+	if strings.HasPrefix(parts[3], "imap") || strings.HasPrefix(parts[3], "master") {
 		logger = parts[3]
 		msg = strings.Join(parts[4:], " ")
 	}
@@ -138,6 +140,11 @@ func parseLine(line string) event {
 		}
 		if strings.Contains(msg, "action=pass") {
 			return greylistPass
+		}
+
+	case strings.HasPrefix(logger, "master"):
+		if strings.Contains(msg, "starting up") {
+			return resetIMAP
 		}
 	}
 	return eventEmpty

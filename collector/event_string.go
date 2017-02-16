@@ -4,9 +4,9 @@ package collector
 
 import "fmt"
 
-const _event_name = "eventEmptyconnectSMTPdisconnectSMTPconnectIMAPdisconnectIMAPincomingMailoutgoingMailunknownUsergreylistedgreylistPassspamBlocked"
+const _event_name = "eventEmptyconnectSMTPdisconnectSMTPconnectIMAPdisconnectIMAPresetIMAPincomingMailoutgoingMailunknownUsergreylistedgreylistPassspamBlockedbounced"
 
-var _event_index = [...]uint8{0, 10, 21, 35, 46, 60, 72, 84, 95, 105, 117, 128}
+var _event_index = [...]uint8{0, 10, 21, 35, 46, 60, 69, 81, 93, 104, 114, 126, 137, 144}
 
 func (i event) String() string {
 	if i < 0 || i >= event(len(_event_index)-1) {

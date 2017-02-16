@@ -46,4 +46,9 @@ func TestParseLine(t *testing.T) {
 		evt := parseLine("Feb 01 16:34:40 imap(thomas@example.com): Info: Logged out in=34 out=471")
 		assert.Equal(t, disconnectIMAP, evt)
 	})
+
+	t.Run("dovecot starting", func(t *testing.T) {
+		evt := parseLine("Feb 16 07:33:20 master: Info: Dovecot v2.2.27 (c0f36b0) starting up for imap, lmtp")
+		assert.Equal(t, resetIMAP, evt)
+	})
 }
